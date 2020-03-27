@@ -10,7 +10,7 @@ class AppProvider {
 	/**
 	 * Hàm này sẽ được gọi sau khi tất cả Provider được khởi tạo.
 	 */
-	boot = () => {
+	boot() {
 		console.log(`Booting ${this.constructor.name}...`);
 	};
 }

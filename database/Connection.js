@@ -4,12 +4,12 @@ const config = require('../config');
 class Connection {
 	static async connect() {
 		try {
-			const conn = await mongoose.connect('mongodb://localhost/', {
+			const conn = await mongoose.connect(`mongodb://${config.database.host}/`, {
 				useNewUrlParser: true,
+				useUnifiedTopology: true,
 				dbName: config.database.name,
 				user: config.database.user,
 				pass: config.database.pass,
-				useUnifiedTopology: true,
 			});
 			console.log('Database connection successful');
 			return conn;

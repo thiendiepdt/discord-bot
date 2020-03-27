@@ -53,7 +53,7 @@ class CoronaUpdateService {
 				}
 				const diffTotal = data.total - coronaInfo.total;
 				const diffDeath = data.death - coronaInfo.death;
-				if (diffTotal || diffDeath) {
+				if (data.total && (diffTotal || diffDeath)) {
 					let message = [];
 					if (diffTotal) {
 						message.push(`Có ${diffTotal} ca nhiễm mới`);
@@ -89,11 +89,12 @@ class CoronaUpdateService {
 					if (!firstCrawl) {
 						channel.send(embed);
 					}
+					coronaInfo.total = data.total;
+					coronaInfo.death = data.death;
+					coronaInfo.cure = data.cure;
+					coronaInfo.date = Date.now();
+					await coronaInfo.save();
 				}
-				coronaInfo.total = data.total;
-				coronaInfo.death = data.death;
-				coronaInfo.cure = data.cure;
-				await coronaInfo.save();
 				browser.close();
 				resolve();
 			} catch (e) {
