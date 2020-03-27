@@ -1,6 +1,7 @@
 const AppProvider = require('../../providers/AppProvider');
 const CoronaInfoCommand = require('./CoronaInfoCommand');
 const CoronaMapCommand = require('./CoronaMapCommand');
+const CoronaPatientInfoCommand = require('./CoronaPatientInfoCommand');
 
 class CoronaProvider extends AppProvider {
 	/**
@@ -11,6 +12,7 @@ class CoronaProvider extends AppProvider {
 		this.commands = [
 			new CoronaInfoCommand(),
 			new CoronaMapCommand(),
+			new CoronaPatientInfoCommand(),
 		];
 	}
 
