@@ -105,7 +105,7 @@ class Character {
 	static getClassByName(name) {
 		return characters.find(character => {
 			return character.name === name;
-		})
+		});
 	}
 }
 

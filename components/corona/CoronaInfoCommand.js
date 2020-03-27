@@ -44,16 +44,22 @@ class CoronaInfoCommand extends Command {
 				const path = 'path' in opts ? opts.path : null;
 				const selector = opts.selector;
 
-				if (!selector) {throw Error('Please provide a selector.');}
+				if (!selector) {
+					throw Error('Please provide a selector.');
+				}
 
 				const rect = await page.evaluate(selector => {
 					const element = document.querySelector(selector);
-					if (!element) {return null;}
+					if (!element) {
+						return null;
+					}
 					const { x, y, width, height } = element.getBoundingClientRect();
 					return { left: x, top: y, width, height, id: element.id };
 				}, selector);
 
-				if (!rect) {throw Error(`Could not find element that matches selector: ${selector}.`);}
+				if (!rect) {
+					throw Error(`Could not find element that matches selector: ${selector}.`);
+				}
 
 				return await page.screenshot({
 					path,
@@ -83,8 +89,7 @@ class CoronaInfoCommand extends Command {
 			};
 
 			await this.message.channel.send({ files: [file], embed: embed });
-		}
-		catch (e) {
+		} catch (e) {
 			await this.message.channel.send('Đã có lỗi xảy ra!');
 		}
 	};

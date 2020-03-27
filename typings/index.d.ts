@@ -11,9 +11,13 @@ export class Command {
     public type: 'NO_ARG' | 'ONE_ARG' | 'ARGS';
 
     constructor();
+
     run(message: Message | PartialMessage);
+
     parseCommand();
+
     valid(): boolean;
+
     execute();
 }
 

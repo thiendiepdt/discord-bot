@@ -19,11 +19,11 @@ const providers = {
 	CoronaProvider,
 	GoogleProvider,
 };
-for(const name in providers) {
+for (const name in providers) {
 	providers[name] = new providers[name]();
 }
 // Booting Providers
-for(const name in providers) {
+for (const name in providers) {
 	providers[name].boot();
 }
 
@@ -40,7 +40,8 @@ client.on('ready', async () => {
 			name: 'Dota 4\nRank 100 {8k MMR} | boss!',
 			type: 'PLAYING',
 		},
-	}).catch(() => {});
+	}).catch(() => {
+	});
 
 });
 

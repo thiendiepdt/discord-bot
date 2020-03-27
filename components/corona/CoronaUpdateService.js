@@ -8,10 +8,12 @@ class CoronaUpdateService {
 	static async run() {
 		try {
 			const channel = await client.channels.fetch(config.channel.corona);
-			this.checkCoronaStatus(channel).catch(() => {});
+			this.checkCoronaStatus(channel).catch(() => {
+			});
 			const minuteMillisecond = 1000 * 60;
 			setInterval(() => {
-				this.checkCoronaStatus(channel).catch(() => {});
+				this.checkCoronaStatus(channel).catch(() => {
+				});
 			}, minuteMillisecond);
 		} catch (e) {
 
@@ -94,8 +96,7 @@ class CoronaUpdateService {
 				await coronaInfo.save();
 				browser.close();
 				resolve();
-			}
-			catch (e) {
+			} catch (e) {
 				reject(e);
 			}
 		});

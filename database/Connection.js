@@ -9,7 +9,7 @@ class Connection {
 				dbName: config.database.name,
 				user: config.database.user,
 				pass: config.database.pass,
-				useUnifiedTopology: true
+				useUnifiedTopology: true,
 			});
 			console.log('Database connection successful');
 			return conn;

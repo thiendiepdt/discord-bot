@@ -54,8 +54,7 @@ class BdoBossTimerCommand extends Command {
 				.setDescription('Hồi sinh: ' + this.getLocalTime(currentBoss.spawnTime.time))
 				.addFields(fields);
 			await this.message.channel.send(embed);
-		}
-		catch (e) {
+		} catch (e) {
 			await this.message.channel.send('Đã có lỗi xảy ra!');
 		}
 	};
@@ -105,8 +104,7 @@ class BdoBossTimerCommand extends Command {
 					return count > 2;
 				});
 				resolve({ currentBoss, followedBoss, today, nextDay });
-			}
-			catch (e) {
+			} catch (e) {
 				reject(e);
 			}
 		});

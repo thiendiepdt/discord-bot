@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CoronaInfoSchema = new Schema({
-	total:  String,
+	total: String,
 	death: String,
-	cure:   String,
+	cure: String,
 	date: { type: Date, default: Date.now },
 });
 

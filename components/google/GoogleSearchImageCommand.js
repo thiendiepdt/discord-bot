@@ -25,7 +25,8 @@ class GoogleSearchImageCommand extends Command {
 					.setTitle(search)
 					.setImage(image.url);
 				await this.message.channel.send(embed);
-			} else {
+			}
+			else {
 				await this.message.channel.send('Đã có lỗi xảy ra!');
 			}
 		} catch (e) {

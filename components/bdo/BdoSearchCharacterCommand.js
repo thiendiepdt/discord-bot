@@ -40,11 +40,11 @@ class BdoSearchCharacterCommand extends Command {
 		return new Promise(async (resolve, reject) => {
 			try {
 				const html = await rp('https://www.sea.playblackdesert.com/Adventure', {
-				    qs: {
-                        searchType: 1,
-                        searchKeyword: name,
-                    }
-                });
+					qs: {
+						searchType: 1,
+						searchKeyword: name,
+					},
+				});
 				const data = parser.parse(html);
 				const rows = data.querySelectorAll('.box_list_area li');
 				const characters = rows.map((row) => {
@@ -54,13 +54,13 @@ class BdoSearchCharacterCommand extends Command {
 					const name = row.querySelector('.user .character_desc .text').structuredText;
 					const className = row.querySelector('.user .character_class .name').structuredText;
 					let guild = row.querySelector('.state').querySelector('a');
-                    guild = guild ? guild.structuredText : 'Not in a guild';
-                    let characterClass = Character.getClassByName(className);
-                    if (!characterClass) {
+					guild = guild ? guild.structuredText : 'Not in a guild';
+					let characterClass = Character.getClassByName(className);
+					if (!characterClass) {
 						characterClass = {
 							name: className,
 							image: undefined,
-						}
+						};
 					}
 					return {
 						familyName,
