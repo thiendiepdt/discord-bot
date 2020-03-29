@@ -37,7 +37,7 @@ client.on('ready', async () => {
 	client.user.setPresence({
 		status: 'online',
 		activity: {
-			name: 'Dota 4\nRank 100 {8k MMR} | boss!',
+			name: 'Dota 4 Rank 100 {8k MMR} | boss!',
 			type: 'PLAYING',
 		},
 	}).catch(() => {

@@ -25,7 +25,7 @@ class BdoSearchCharacterCommand extends Command {
 			characters.forEach((character) => {
 				const embed = new MessageEmbed()
 					.setColor(Color.primary)
-					.setTitle(`character.name (${character.class.name} Lv.${character.level})`)
+					.setTitle(`${character.name} (${character.class.name} Lv.${character.level})`)
 					.setThumbnail(character.class.image)
 					.setURL(character.profileUrl)
 					.setDescription('Guild: ' + character.guild);

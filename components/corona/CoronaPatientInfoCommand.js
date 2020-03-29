@@ -40,9 +40,8 @@ class CoronaPatientInfoCommand extends Command {
 				const p = [];
 				elements.forEach((element) => {
 					const text = element.textContent.split(':');
-					const number = text[0].trim().replace(/^-+|-+$/g, '')
+					const number = text.shift().trim().replace(/^-+|-+$/g, '')
 						.replace(/^\*+|\*+$/g, '');
-					text.shift();
 					const info = text.join();
 					p.push({number, info});
 				});
