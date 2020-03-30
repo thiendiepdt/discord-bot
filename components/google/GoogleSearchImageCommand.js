@@ -2,6 +2,7 @@ const Command = require('../../commands/Command');
 const CommandType = require('../../commands/CommandType');
 const { MessageEmbed } = require('discord.js');
 const Scraper = require('../../lib/google-images-scraper');
+const PuppeteerFlag = require('../../constants/PuppeteerFlag');
 
 /**
  * Command search google image
@@ -42,14 +43,7 @@ class GoogleSearchImageCommand extends Command {
 					limit: 20,
 					puppeteer: {
 						headless: true,
-						args: [
-							'--no-sandbox',
-							'--disable-setuid-sandbox',
-							'--disable-dev-shm-usage',
-							'--disable-accelerated-2d-canvas',
-							'--disable-gpu',
-							'--window-size=1920x1080',
-						],
+						args: PuppeteerFlag.common,
 					},
 					tbs: {
 						// http://jwebnet.net/advancedgooglesearch.html

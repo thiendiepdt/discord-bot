@@ -2,6 +2,7 @@ const Command = require('../../commands/Command');
 const CommandType = require('../../commands/CommandType');
 const { MessageAttachment } = require('discord.js');
 const puppeteer = require('puppeteer');
+const PuppeteerFlag = require('../../constants/PuppeteerFlag');
 
 /**
  * Command lấy giờ bản đồ dịch corona từ trang https://ncov.moh.gov.vn/
@@ -16,17 +17,10 @@ class CoronaMapCommand extends Command {
 	}
 
 	async execute() {
+		const browser = await puppeteer.launch({
+			args: PuppeteerFlag.common,
+		});
 		try {
-			const browser = await puppeteer.launch({
-				args: [
-					'--no-sandbox',
-					'--disable-setuid-sandbox',
-					'--disable-dev-shm-usage',
-					'--disable-accelerated-2d-canvas',
-					'--disable-gpu',
-					'--window-size=1920x1080',
-				],
-			});
 			const page = await browser.newPage();
 			// Adjustments particular to this page to ensure we hit desktop breakpoint.
 			await page.setViewport({ width: 1920, height: 1080, deviceScaleFactor: 2 });
@@ -88,9 +82,10 @@ class CoronaMapCommand extends Command {
 				},
 			};
 
-			this.message.channel.send({ files: [file], embed: embed });
+			await this.message.channel.send({ files: [file], embed: embed });
 		} catch (e) {
-			this.message.channel.send('Đã có lỗi xảy ra!');
+			browser.close();
+			await this.message.channel.send('Đã có lỗi xảy ra!');
 		}
 	};
 }

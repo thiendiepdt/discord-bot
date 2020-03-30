@@ -4,6 +4,7 @@ const rp = require('request-promise');
 const parser = require('node-html-parser');
 const { MessageEmbed } = require('discord.js');
 const puppeteer = require('puppeteer');
+const PuppeteerFlag = require('../../constants/PuppeteerFlag');
 
 /**
  * Command Lấy danh sách bệnh nhân
@@ -17,17 +18,10 @@ class CoronaPatientInfoCommand extends Command {
 	}
 
 	async execute() {
+		const browser = await puppeteer.launch({
+			args: PuppeteerFlag.common,
+		});
 		try {
-			const browser = await puppeteer.launch({
-				args: [
-					'--no-sandbox',
-					'--disable-setuid-sandbox',
-					'--disable-dev-shm-usage',
-					'--disable-accelerated-2d-canvas',
-					'--disable-gpu',
-					'--window-size=1920x1080',
-				],
-			});
 			const page = await browser.newPage();
 			// Adjustments particular to this page to ensure we hit desktop breakpoint.
 			await page.setViewport({ width: 1920, height: 1080, deviceScaleFactor: 2 });
@@ -43,10 +37,11 @@ class CoronaPatientInfoCommand extends Command {
 					const number = text.shift().trim().replace(/^-+|-+$/g, '')
 						.replace(/^\*+|\*+$/g, '');
 					const info = text.join();
-					p.push({number, info});
+					p.push({ number, info });
 				});
 				return p;
 			});
+			browser.close();
 			const embed = new MessageEmbed()
 				.setColor('#0099ff')
 				.setTitle('Danh sách bệnh nhân')
@@ -57,11 +52,11 @@ class CoronaPatientInfoCommand extends Command {
 					return {
 						name: patient.number,
 						value: patient.info,
-					}
+					};
 				}));
 			await this.message.channel.send(embed);
 		} catch (e) {
-			console.log(e);
+			browser.close();
 			await this.message.channel.send('Đã có lỗi xảy ra!');
 		}
 	};

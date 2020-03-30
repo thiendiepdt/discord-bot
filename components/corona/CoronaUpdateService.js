@@ -3,6 +3,7 @@ const { MessageEmbed } = require('discord.js');
 const puppeteer = require('puppeteer');
 const config = require('../../config');
 const CoronaInfo = require('../../models/CoronaInfo');
+const ProcessFlag = require('../../constants/PuppeteerFlag');
 
 class CoronaUpdateService {
 	static async run() {
@@ -22,17 +23,10 @@ class CoronaUpdateService {
 
 	static async checkCoronaStatus(channel) {
 		return new Promise(async (resolve, reject) => {
+			const browser = await puppeteer.launch({
+				args: ProcessFlag.common,
+			});
 			try {
-				const browser = await puppeteer.launch({
-					args: [
-						'--no-sandbox',
-						'--disable-setuid-sandbox',
-						'--disable-dev-shm-usage',
-						'--disable-accelerated-2d-canvas',
-						'--disable-gpu',
-						'--window-size=1920x1080',
-					],
-				});
 				const page = await browser.newPage();
 				// Adjustments particular to this page to ensure we hit desktop breakpoint.
 				await page.setViewport({ width: 1920, height: 4000, deviceScaleFactor: 2 });
@@ -95,9 +89,10 @@ class CoronaUpdateService {
 					coronaInfo.date = Date.now();
 					await coronaInfo.save();
 				}
-				browser.close();
+				await browser.close();
 				resolve();
 			} catch (e) {
+				await browser.close();
 				reject(e);
 			}
 		});
