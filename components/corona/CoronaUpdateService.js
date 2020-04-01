@@ -47,13 +47,17 @@ class CoronaUpdateService {
 				}
 				const diffTotal = data.total - coronaInfo.total;
 				const diffDeath = data.death - coronaInfo.death;
-				if (data.total && (diffTotal || diffDeath)) {
+				const diffCure = data.cure - coronaInfo.cure;
+				if (data.total && (diffTotal || diffDeath || diffCure)) {
 					let message = [];
 					if (diffTotal) {
 						message.push(`Có ${diffTotal} ca nhiễm mới`);
 					}
-					else {
-						message.push(`Có thêm ${diffTotal} người chết`);
+					if (diffDeath) {
+						message.push(`Có thêm ${diffDeath} người chết`);
+					}
+					if (diffCure) {
+						message.push(`Có thêm ${diffCure} người hồi phục`);
 					}
 					message = message.join('. ');
 					const embed = new MessageEmbed()
