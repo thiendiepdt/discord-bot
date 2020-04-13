@@ -68,7 +68,7 @@ class CoronaInfoCommand extends Command {
 
 			await screenshotDOMElement({
 				path: 'storage/corona/corona.png',
-				selector: '.bg-trang1',
+				selector: '.box-tke',
 				padding: 0,
 			});
 

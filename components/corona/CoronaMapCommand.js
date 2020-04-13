@@ -68,7 +68,7 @@ class CoronaMapCommand extends Command {
 
 			await screenshotDOMElement({
 				path: 'storage/corona/corona-map.png',
-				selector: '.bg-trang1a img',
+				selector: '.bg-xanh123 img',
 				padding: 0,
 			});
 
