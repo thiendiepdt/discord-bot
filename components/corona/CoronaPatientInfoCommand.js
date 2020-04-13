@@ -18,45 +18,35 @@ class CoronaPatientInfoCommand extends Command {
 	}
 
 	async execute() {
-		const browser = await puppeteer.launch({
-			args: PuppeteerFlag.common,
-		});
 		try {
-			const page = await browser.newPage();
-			// Adjustments particular to this page to ensure we hit desktop breakpoint.
-			await page.setViewport({ width: 1920, height: 1080, deviceScaleFactor: 2 });
-
-			await page.goto('https://ncov.moh.gov.vn/', { waitUntil: 'networkidle2' });
-
-			const patients = await page.evaluate(() => {
-				const elements = document.querySelectorAll('#yui_patched_v3_11_0_1_1582618410030_3628>div')[1]
-					.lastElementChild.querySelectorAll('p');
-				const p = [];
-				elements.forEach((element) => {
-					const text = element.textContent.split(':');
-					const number = text.shift().trim().replace(/^-+|-+$/g, '')
-						.replace(/^\*+|\*+$/g, '');
-					const info = text.join();
-					p.push({ number, info });
-				});
-				return p;
+			let html = await rp('https://ncov.moh.gov.vn/dong-thoi-gian', {
+				rejectUnauthorized: false,
+				gzip: true,
 			});
-			browser.close();
+			const data = parser.parse(html);
+			const timelineDetails = data.querySelectorAll('.timeline-detail');
+			const timelines = timelineDetails.slice(0, 2).map((timelineDetail) => {
+				let [timelineHead, timelineContent] = timelineDetail.querySelectorAll('div');
+				return {
+					time: timelineHead.structuredText,
+					content: timelineContent.structuredText,
+				}
+			});
+
 			const embed = new MessageEmbed()
 				.setColor('#0099ff')
 				.setTitle('Danh sách bệnh nhân')
 				.setThumbnail('https://i.imgur.com/24symGa.png')
 				.setAuthor('https://ncov.moh.gov.vn/')
-				.setURL('https://ncov.moh.gov.vn/')
-				.addFields(patients.slice(0, 5).map((patient) => {
+				.setURL('https://ncov.moh.gov.vn/dong-thoi-gian')
+				.addFields(timelines.map(timeline => {
 					return {
-						name: patient.number,
-						value: patient.info,
+						name: timeline.time,
+						value: timeline.content,
 					};
 				}));
 			await this.message.channel.send(embed);
 		} catch (e) {
-			browser.close();
 			await this.message.channel.send('Đã có lỗi xảy ra!');
 		}
 	};
